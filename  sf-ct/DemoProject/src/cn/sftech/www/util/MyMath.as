@@ -1,4 +1,4 @@
-﻿package htd.util
+﻿package cn.sftech.www.util
 {
 	
 	public class MyMath

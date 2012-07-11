@@ -1,7 +1,15 @@
-package htd.view
+package cn.sftech.www.view
 {
-	import cn.sftech.www.view.SFContainer;
-	import cn.sftech.www.view.SFMovieClip;
+	import cn.sftech.www.event.KindleEndEvent;
+	import cn.sftech.www.model.Information;
+	import cn.sftech.www.model.ModelLocator;
+	import cn.sftech.www.object.CustomerCharacter;
+	import cn.sftech.www.object.DollarNumber;
+	import cn.sftech.www.object.FoodObject;
+	import cn.sftech.www.object.MoneyCount;
+	import cn.sftech.www.object.ServeFoodObject;
+	import cn.sftech.www.util.BaseUI;
+	import cn.sftech.www.util.DataManager;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -9,16 +17,6 @@ package htd.view
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
-	
-	import htd.event.KindleEndEvent;
-	import htd.model.Information;
-	import htd.object.CustomerCharacter;
-	import htd.object.DollarNumber;
-	import htd.object.FoodObject;
-	import htd.object.MoneyCount;
-	import htd.object.ServeFoodObject;
-	import htd.util.BaseUI;
-	import htd.util.DataManager;
 	
 	import org.osmf.events.TimeEvent;
 
@@ -48,11 +46,11 @@ package htd.view
 		///////
 		private var viceMeal : GameViceMeal;
 		/**
-		 * Food's array (Right table )
+		 * Food's array (Right table ) 候选的食物数组
 		 */		
 		private var foodArr :Vector.<FoodObject>;
 		/**
-		 * selected food's array.
+		 * selected food's array. 已经选中的食物数组
 		 */		
 		private var foodServeArr : Vector.<ServeFoodObject>;
 		private var selectFoodArr:Vector.<int>;
@@ -80,6 +78,8 @@ package htd.view
 		
 		// if player select food this pane's number is increased.
 		private var selectFoodMoney:MoneyCount;
+		
+		private var _model : ModelLocator = ModelLocator.getInstance();
 		
 		public function GamePage()
 		{
@@ -161,6 +161,7 @@ package htd.view
 			timeSymbol = new TimeSymbol();
 			TablePan.addChild(timeSymbol);
 			CreateFood();
+			CreateCustomerArr();
 			CreateButtons();
 		}
 		
@@ -177,6 +178,88 @@ package htd.view
 			this.addEventListener(MouseEvent.MOUSE_DOWN, ClickMouseBackButton);
 			this.addEventListener(MouseEvent.MOUSE_MOVE, MovePackage);
 			this.addEventListener(MouseEvent.MOUSE_UP,CheckMouseUpOnFood);
+			
+		}
+		
+		/////  
+		/*
+		Insert food on the table for waiting to select
+		*/
+		
+		private function CreateFood():void
+		{
+//			_model.gameingFoods = _model.menuData;
+			var length : int = _model.menuData.length;
+			for(var a : int = 0;a < length;a++) {
+				var foodObj : FoodObject = new FoodObject();
+//				foodObj
+				foodObj.type = _model.menuData[a].ID;
+				foodObj.price = _model.menuData[a].price;
+				foodObj.background = _model.menuData[a].foodPic_a;
+				foodObj.setBGClass(_model.menuData[a].foodPic_p,_model.menuData[a].foodPic_t);
+				
+				_model.gameingFoods[a] = foodObj;
+			}
+			
+			var tempArr : Vector.<FoodObject> = _model.gameingFoods;
+			
+			for(var i:int =0; i<Information.foodBufferNum; i++)
+			{
+				var foodMember:FoodObject = tempArr[i];
+				var col:int=i%(Information.foodBufferNum/2);
+				var rol:int=i/(Information.foodBufferNum/2);
+//				foodMember.type = tempArr[i].ID;
+//				foodMember.price = tempArr[i].price;
+//				foodMember.background = tempArr[i].foodPic_a;
+//				foodMember.setBGClass(tempArr[i].foodPic_p,tempArr[i].foodPic_t);
+				foodMember.x= Information.foodBaseX + Information.foodWidth * (col);
+				foodMember.y= Information.foodBaseY + Information.foodHeight * (rol);
+				
+				foodArr[i] = foodMember;
+				FoodPan.addChild(foodMember);
+				var numMovi: DollarNumber=new DollarNumber();
+				numMovi.x=foodMember.x - 8;
+				if(rol == 1)
+					numMovi.y=foodMember.y -31;
+				else
+					numMovi.y=foodMember.y -32;
+				numMovi.valueNum = foodMember.price;
+				FoodPan.addChild(numMovi);
+			}
+		}
+		
+		private function CreateCustomerArr() : void
+		{
+			customPan.CreateCustomerArr();
+		}
+		
+		//////  insert Button
+		private function CreateButtons():void
+		{
+			gameBackButton =  new GameBackButton();			
+			gameBackButton.x= Information.gameBackButton_Xpos  ;
+			ButtonPan.addChild(gameBackButton);
+			gameMealButton = new GameMealButton();
+			gameMealButton.x =Information.gameMealButton_Xpos
+			gameMealButton.y =Information.gameMealButton_Ypos
+			ButtonPan.addChild(gameMealButton);
+			gamePropButton =  new GameProp();
+			gamePropButton.x = Information.gameMealButton_Xpos;
+			gamePropButton.y = Information.gamePropButton_Ypos;		
+			ButtonPan.addChild(gamePropButton);
+			viceMeal =new  GameViceMeal();
+			viceMeal.x =Information.gameMealButton_Xpos;
+			viceMeal.y =Information.gameViceButton_Ypos;
+			ButtonPan.addChild(viceMeal);
+			gameRestartPlate= new GameRestartPlate();
+			gameRestartPlate.x=Information.gameRestartPlateButton_Xpos;
+			gameRestartPlate.y=Information.gameRestartPlateButton_Ypos;
+			
+			gameRestartPlate.addEventListener(MouseEvent.MOUSE_DOWN, ClickRestartButton);
+			gameRestartPlate.addEventListener(MouseEvent.MOUSE_UP, UpRestartButton);
+			
+			//			pauseBtn =new PauseBtn();
+			ButtonPan.addChild(gameRestartPlate);
 			
 		}
 		
@@ -248,7 +331,7 @@ package htd.view
 				//var yPos:int = Information.foodPaneBaseY+ (i/(Information.foodBufferNum/2))*Information.foodPaneHeight;
 				var width:int = Information.foodPaneWidth;
 				var height:int = Information.foodHeight;
-				if((mouseX>xPos) && (mouseX<(xPos+width)) && (mouseY>yPos) && (mouseY<(yPos+height)))
+				if((mouseX>xPos) && (mouseX<(xPos+width)) && (mouseY>yPos) && (mouseY<(yPos+height))) //鼠标点钟指定菜的位置
 				{
 					
 					for(var j:int=0; j<selectFoodArr.length; j++)
@@ -263,6 +346,7 @@ package htd.view
 					}
 					selectFoodIndex=i;
 					var clickFood:FoodObject = foodArr[i];
+					break;
 					//clickFood.palyAndStopEnd();
 					
 				}
@@ -512,14 +596,13 @@ package htd.view
 							}
 							
 							{
-								var serveFood:ServeFoodObject =new ServeFoodObject();
-								serveFood.type =foodArr[i].type;								
+								var serveFood:ServeFoodObject = foodArr[i].serveFood;
 								selectFoodMoney.moneyCount += foodArr[i].price;
 								var servCol:int = (foodServeArr.length)%2;
 								var servRol:int = foodServeArr.length/2;
 								serveFood.x=Information.servePanBaseX+Information.servePanWidth*servCol;
 								serveFood.y=Information.servePanBaseY +Information.servePanHeight*servRol;	
-								foodServeArr.push(serveFood);								
+								foodServeArr.push(serveFood);
 								this.TablePan.addChild(serveFood);
 								selectFoodArr.push(i);
 								//foodArr[selectFoodIndex].state = 3;;
@@ -543,64 +626,7 @@ package htd.view
 			
 		}
 		
-		/////  
-		/*
-				Insert food on the table for waiting to select
-		*/
 		
-		private function CreateFood():void
-		{
-			for(var i:int =0; i<Information.foodBufferNum; i++)
-			{
-				var foodMember:FoodObject =new FoodObject();
-				var col:int=i%(Information.foodBufferNum/2);
-				var rol:int=i/(Information.foodBufferNum/2);
-				foodMember.type = i;
-				foodMember.x= Information.foodBaseX + Information.foodWidth * (col);
-				foodMember.y= Information.foodBaseY + Information.foodHeight * (rol);
-				
-				foodArr[i] = foodMember;
-				FoodPan.addChild(foodMember);
-				var numMovi: DollarNumber=new DollarNumber();
-				numMovi.x=foodMember.x - 8;
-				if(rol == 1)
-					numMovi.y=foodMember.y -31;
-				else
-					numMovi.y=foodMember.y -32;
-				numMovi.valueNum = foodMember.price;
-				FoodPan.addChild(numMovi);
-			}
-		}
-		
-		//////  insert Button
-		private function CreateButtons():void
-		{
-			gameBackButton =  new GameBackButton();			
-			gameBackButton.x= Information.gameBackButton_Xpos  ;
-			ButtonPan.addChild(gameBackButton);
-			gameMealButton = new GameMealButton();
-			gameMealButton.x =Information.gameMealButton_Xpos
-			gameMealButton.y =Information.gameMealButton_Ypos
-			ButtonPan.addChild(gameMealButton);
-			gamePropButton =  new GameProp();
-			gamePropButton.x = Information.gameMealButton_Xpos;
-			gamePropButton.y = Information.gamePropButton_Ypos;		
-			ButtonPan.addChild(gamePropButton);
-			viceMeal =new  GameViceMeal();
-			viceMeal.x =Information.gameMealButton_Xpos;
-			viceMeal.y =Information.gameViceButton_Ypos;
-			ButtonPan.addChild(viceMeal);
-			gameRestartPlate= new GameRestartPlate();
-			gameRestartPlate.x=Information.gameRestartPlateButton_Xpos;
-			gameRestartPlate.y=Information.gameRestartPlateButton_Ypos;
-			
-			gameRestartPlate.addEventListener(MouseEvent.MOUSE_DOWN, ClickRestartButton);
-			gameRestartPlate.addEventListener(MouseEvent.MOUSE_UP, UpRestartButton);
-			
-//			pauseBtn =new PauseBtn();
-			ButtonPan.addChild(gameRestartPlate);
-			
-		}
 		
 		///////  Click and Over RestartButton
 		
@@ -637,8 +663,6 @@ package htd.view
 			
 			return false;
 		}
-		
-	
 		
 		/////// Reset All food on the package table(on the left)
 		

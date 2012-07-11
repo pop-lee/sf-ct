@@ -6,7 +6,7 @@ package
 	import cn.sftech.www.view.SFApplication;
 	import cn.sftech.www.view.SFLogo;
 	import cn.sftech.www.view.SFViewStack;
-	import htd.util.DataManager;
+	import cn.sftech.www.util.DataManager;
 	
 	import com.greensock.data.TweenLiteVars;
 	
@@ -15,7 +15,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
-	import htd.view.GamePage;
+	import cn.sftech.www.view.GamePage;
 	
 	[SWF(width="480",height="320")]
 	

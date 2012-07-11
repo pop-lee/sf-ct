@@ -1,9 +1,9 @@
-package htd.object
+package cn.sftech.www.object
 {
 	import flash.display.MovieClip;
 	
-	import htd.model.Information;
-	import htd.util.BaseUI;
+	import cn.sftech.www.model.Information;
+	import cn.sftech.www.util.BaseUI;
 	
 	public class DollarNumber extends MovieClip
 	{
@@ -36,10 +36,12 @@ package htd.object
 			if(textLength == 2)
 			{
 				firstbody=new NumberinPlate();
-				firstbody.gotoAndStop(int(chars.substr(0,1)));
+				trace(int(chars.substr(0,1))+1);
+				trace(int(chars.substr(1,1))+1);
+				firstbody.gotoAndStop(int(chars.substr(0,1))+1);
 				firstbody.x=(Information.dollarPanWidth - textPerWidth*2)/2;
 				secondbody=new NumberinPlate();
-				secondbody.gotoAndStop(int(chars.substr(1,1)));
+				secondbody.gotoAndStop(int(chars.substr(1,1))+1);
 				secondbody.x=firstbody.x + textPerWidth;
 				addChild(firstbody);
 				addChild(secondbody);
@@ -49,7 +51,7 @@ package htd.object
 			{
 				
 				firstbody=new NumberinPlate();
-				firstbody.gotoAndStop(int(chars.substr(0,1)));
+				firstbody.gotoAndStop(int(chars.substr(0,1))+1);
 				firstbody.x=(Information.dollarPanWidth - textPerWidth)/2;
 				addChild(firstbody);
 			}

@@ -1,5 +1,10 @@
-package htd.object
+package cn.sftech.www.object
 {
+	import cn.sftech.www.event.KindleEndEvent;
+	import cn.sftech.www.event.WaitPersonFinishEvent;
+	import cn.sftech.www.model.GamingModel;
+	import cn.sftech.www.model.Information;
+	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.util.MathUtil;
 	
 	import com.greensock.TweenLite;
@@ -10,10 +15,7 @@ package htd.object
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
-	
-	import htd.event.KindleEndEvent;
-	import htd.event.WaitPersonFinishEvent;
-	import htd.model.Information;
+
 	/**
 	 * 顾客人物
 	 * @author LiYunpeng
@@ -21,6 +23,8 @@ package htd.object
 	 */	
 	public class CustomerCharacter extends MovieClip
 	{
+		private var _model : ModelLocator = ModelLocator.getInstance();
+		
 		//private var WaitingTimer : Timer;
 		private var wiatTimeLine :int;
 		private var body:MovieClip;
@@ -35,7 +39,8 @@ package htd.object
 		private var mony:MovieClip;
 		private var dollarNum : MovieClip;
 		private var canMoney:int;
-		private var niceFood:int;
+		//喜欢的食物在候选菜列表里的索引
+		private var niceFoodIndex:int;
 		private var _talkWidth :int;
 		private var _talkHeight:int;
 		private var moveMoneyEffect:Displayneed;
@@ -81,12 +86,15 @@ package htd.object
 		/*
 		* person's Position for pay.
 		*/
-		
 		public function get arrivedPosition():Point
 		{
 			return arrivedPos;
 		}
-		
+		/**
+		 * 顾客排队停留的位置
+		 * @param val
+		 * 
+		 */		
 		public function set arrivedPosition(val:Point):void
 		{
 			arrivedPos = val;
@@ -150,8 +158,8 @@ package htd.object
 			if(this.body)
 				this.removeChild(body);
 			
-			niceFood = MathUtil.random(0,6);
-			canMoney = Information.gamePrice[niceFood];
+			niceFoodIndex = MathUtil.random(0,Information.foodBufferNum);
+			canMoney = _model.getFoodPrice(niceFoodIndex);
 			
 			var second:int =-1;
 			var first:int =-1;
@@ -163,10 +171,10 @@ package htd.object
 				
 				if(numCount == 0)
 				{
-					first = MathUtil.random(0,6);
-					if(niceFood != first)
+					first = MathUtil.random(0,Information.foodBufferNum);
+					if(niceFoodIndex != first)
 					{
-						canMoney += Information.gamePrice[first];
+						canMoney += _model.getFoodPrice(first);
 						numCount++;
 					}
 					
@@ -174,22 +182,22 @@ package htd.object
 				}
 				else if(numCount == 1)
 				{
-					second = MathUtil.random(0,6);
-					if((second != niceFood) && ( second  != first))
+					second = MathUtil.random(0,Information.foodBufferNum);
+					if((second != niceFoodIndex) && ( second  != first))
 					{
 						
-						canMoney += Information.gamePrice[second];
+						canMoney += _model.getFoodPrice(second);
 						numCount++;
 					}
 					
 				}
 				else if(numCount == 2)
 				{
-					third = MathUtil.random(0,6);
-					if((third !=  second) && ( third != niceFood) && ( third != first))
+					third = MathUtil.random(0,Information.foodBufferNum);
+					if((third !=  second) && ( third != niceFoodIndex) && ( third != first))
 					{
 						
-						canMoney += Information.gamePrice[third];
+						canMoney += _model.getFoodPrice(third);
 						numCount++;
 					}
 					
@@ -207,8 +215,6 @@ package htd.object
 					_speakPositionX = -37;
 					if(Information.GameMode == Information.RandomGameMode)
 						wiatTimeLine= Information.first_girl_waitingTime;
-					
-					
 				}
 					break;
 				case 1:
@@ -268,7 +274,7 @@ package htd.object
 		
 		public function get happyFood():int
 		{
-			return niceFood;
+			return niceFoodIndex;
 		}
 		
 		/*
@@ -380,8 +386,8 @@ package htd.object
 			
 			
 			
-			down= new TalkFood();
-			down.type = this.niceFood;
+			down= _model.gameingFoods[niceFoodIndex].talkFood;
+//			down.type = _model.gameingFoods[niceFoodIndex].get;
 			down.x=talkPane.x+10*(Information.talkBoxWidth-_talkWidth)/Information.talkBoxWidth;
 			down.y=talkPane.y+55*(Information.talkBoxHeight-_talkHeight)/Information.talkBoxHeight;			
 			down.width =down.width*(Information.talkBoxWidth-_talkWidth)/Information.talkBoxWidth;
