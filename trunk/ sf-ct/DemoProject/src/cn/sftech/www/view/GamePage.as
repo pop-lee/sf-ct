@@ -771,7 +771,6 @@ package cn.sftech.www.view
 				this.customPan.goTofirstPlace();
 			else if (this.gameMode ==  Information.RandomGameMode)
 				this.customPan.goToRandomfirstPlace();
-			
 		}
 		
 		

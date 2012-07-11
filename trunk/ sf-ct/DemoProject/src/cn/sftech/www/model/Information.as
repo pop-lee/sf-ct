@@ -33,7 +33,8 @@ package cn.sftech.www.model
 		public static const moveAblePositionWidth:int =100;
 		public static const moveAblePositionHeight:int =55;
 		public static const Easy_TIME_LINE:int = 120;
-		public static const Random_TIME_LINE:int = 120;
+		//游戏时间长度（单位：秒）
+		public static const Random_TIME_LINE:int = 5;
 		
 		public static const goldNumberSymbol_x:int = 203;
 		public static const goldNumberSymbol_y:int = 5;
