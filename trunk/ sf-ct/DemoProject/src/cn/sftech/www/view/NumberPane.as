@@ -1,11 +1,11 @@
-package htd.view
+package cn.sftech.www.view
 {
 //	import cn.sftech.www.view.SFContainer;
 	
 	import flash.display.MovieClip;
 	
-	import htd.model.Information;
-	import htd.util.BaseUI;
+	import cn.sftech.www.model.Information;
+	import cn.sftech.www.util.BaseUI;
 	
 	public class NumberPane extends MovieClip
 	{

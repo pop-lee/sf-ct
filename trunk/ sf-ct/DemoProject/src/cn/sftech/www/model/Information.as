@@ -1,4 +1,4 @@
-package htd.model
+package cn.sftech.www.model
 {
 	public class Information
 	{
@@ -69,8 +69,8 @@ package htd.model
 		public static var isGameOver:Boolean =false;
 		
 		
-		///// food price
-		public static const gamePrice:Array=[1,2,5,8,11,15];
+//		///// food price
+//		public static const gamePrice:Array=[1,2,5,8,11,15];
 		
 		
 		

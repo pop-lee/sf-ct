@@ -1,4 +1,4 @@
-package htd.event
+package cn.sftech.www.event
 {
 	import flash.events.Event;
 	

@@ -1,7 +1,6 @@
-package htd.view
+package cn.sftech.www.view
 {
 	import cn.sftech.www.util.MathUtil;
-	import cn.sftech.www.view.SFMovieClip;
 	
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Linear;
@@ -13,10 +12,10 @@ package htd.view
 	
 	import flashx.textLayout.formats.Float;
 	
-	import htd.event.KindleEndEvent;
-	import htd.event.WaitPersonFinishEvent;
-	import htd.model.Information;
-	import htd.object.CustomerCharacter;
+	import cn.sftech.www.event.KindleEndEvent;
+	import cn.sftech.www.event.WaitPersonFinishEvent;
+	import cn.sftech.www.model.Information;
+	import cn.sftech.www.object.CustomerCharacter;
 	
 	
 	public class CustomerPanes extends SFMovieClip
@@ -82,7 +81,6 @@ package htd.view
 			removedIndex = -1;
 			removedwaitIndex =-1;
 			customArr =new Vector.<CustomerCharacter>(3);
-			CreateCustomerArr();
 			newendTalk  = false;
 			isCanGetPos = true;
 			//firstendTalk = false;
@@ -118,7 +116,6 @@ package htd.view
 		
 		private function onRandomSecondCustomerStart(event:TimerEvent):void
 		{
-			
 			secondPlaceTimer.stop();
 			goTosecondRandomPlace();
 		}
@@ -163,21 +160,20 @@ package htd.view
 			{
 				for( i =0; i< 3; i++)
 				{
-				    customer =new CustomerCharacter();
-				   customer.type = MathUtil.random(0,4);
-				   customer.orderNums = i;
-				   customArr[i] = customer;			   
-				   customArr[i] .y= Information.personCharaterY;
-				   customArr[i] .x= Information.personCharaterX;
-				   customArr[i].arrivedPosition = new Point(Information.personCharaterX,Information.personCharaterY);
-				   //  		customArr[i].addEventListener(WaitPersonFinishEvent.NOT_WAIT_FINISH,NoWait);
-				   addChild(customer);
-				   this.setChildIndex(customArr[i],0);
+					customer =new CustomerCharacter();
+					customer.type = MathUtil.random(0,4);
+					customer.orderNums = i;
+					customArr[i] = customer;			
+					customArr[i] .y= Information.personCharaterY;
+					customArr[i] .x= Information.personCharaterX;
+					customArr[i].arrivedPosition = new Point(Information.personCharaterX,Information.personCharaterY);
+					//  		customArr[i].addEventListener(WaitPersonFinishEvent.NOT_WAIT_FINISH,NoWait);
+					addChild(customer);
+					this.setChildIndex(customArr[i],0);
 				}
 			}
 		}
 		
-		//public 
 		/*
 		 *   In easy mode 
 		*/
@@ -1069,13 +1065,8 @@ package htd.view
 			return -1;
 		}
 		
-		
-		
-		
 		public function goTosecondRandomPlace():void
 		{
-			
-			
 			var beginPosX:int = getpos(customArr[1] , 1);
 			this.isGetingPos = false;
 			if(beginPosX > 0)

@@ -1,9 +1,8 @@
-package htd.util
+package cn.sftech.www.util
 {
 	import cn.sftech.www.event.SFInitializeDataEvent;
 //	import cn.sftech.www.model.GameLevelModel;
 //	import cn.sftech.www.model.GameValue;
-	import cn.sftech.www.util.ByteArrayObjectTranslator;
 	import cn.sftech.www.view.SFApplication;
 	
 	import com.qq.openapi.MttGameData;

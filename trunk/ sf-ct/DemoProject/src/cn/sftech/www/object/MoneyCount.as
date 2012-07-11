@@ -1,8 +1,8 @@
-package htd.object
+package cn.sftech.www.object
 {
 	import flash.display.MovieClip;
-	import htd.util.BaseUI;
-	import htd.model.Information;
+	import cn.sftech.www.util.BaseUI;
+	import cn.sftech.www.model.Information;
 	
 	public class MoneyCount extends MovieClip
 	{
