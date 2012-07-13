@@ -2,8 +2,13 @@ package cn.sftech.www.model
 {
 	public class Information
 	{
-		public static const timeSymbol_x:int = 35;
-		public static const timeSymbol_y:int = 5;
+		public static const timeSymbol_x:int = 45;
+		public static const timeSymbol_y:int = 16;
+		public static const goldNumberSymbol_x:int = 203;
+		public static const goldNumberSymbol_y:int = 16;
+		public static const heartNumberSymbol_x:int = 336;
+		public static const heartNumberSymbol_y:int = 16;
+		
 		public static const gameBackButton_Xpos : int= 437;
 		public static const gameMealButton_Xpos : int= 146; 
 		public static const gameMealButton_Ypos : int= 197; 
@@ -36,14 +41,14 @@ package cn.sftech.www.model
 		//游戏时间长度（单位：秒）
 		public static const Random_TIME_LINE:int = 5;
 		
-		public static const goldNumberSymbol_x:int = 203;
-		public static const goldNumberSymbol_y:int = 5;
-		
-		public static const heartNumberSymbol_x:int = 336;
-		public static const heartNumberSymbol_y:int = 5;
-		
 		public static const moneyNumberSymbol_x:int = 64;
 		public static const moneyNumberSymbol_y:int = 168;
+		public static const popularityScoreSymbol_x:int = 92;
+		public static const popularityScoreSymbol_y:int = 70;
+		public static const coinScoreSymbol_x:int = 92;
+		public static const coinScoreSymbol_y:int = 106;
+		public static const ExperienceScoreSymbol_x:int = 92;
+		public static const ExperienceScoreSymbol_y:int = 142;
 		
 		public static const dollarPanWidth : int = 26;
 		

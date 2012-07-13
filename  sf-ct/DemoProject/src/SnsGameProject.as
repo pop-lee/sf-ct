@@ -98,10 +98,10 @@ package
 		private function initUI() : void
 		{
 			this.backgroundColor = 0x0000ff;
-			this.backgroundAlpha = 1;			
+			this.backgroundAlpha = 1;
 			vs = new SFViewStack();
-			vs.percentWidth = this.width;
-			vs.percentHeight = this.height;
+			vs.percentWidth = 100;
+			vs.percentHeight = 100;
 			vs.backgroundColor = 0x000000;
 			vs.backgroundAlpha = 1;
 			
