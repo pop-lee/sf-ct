@@ -46,6 +46,7 @@ package cn.sftech.www.view
 			_goldCount = value;
 			var pictureLength:int = _goldCount.toString().length-1;
 			goldCounterSymbol.x = Information.goldNumberSymbol_x - 8*pictureLength;
+			goldCounterSymbol.y = Information.goldNumberSymbol_y;
 			BaseUI.showInfo(goldCounterSymbol, _goldCount.toString(), "goldNum", 4);
 		}
 

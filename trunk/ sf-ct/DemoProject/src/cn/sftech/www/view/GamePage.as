@@ -3,16 +3,23 @@ package cn.sftech.www.view
 	import cn.sftech.www.event.KindleEndEvent;
 	import cn.sftech.www.model.Information;
 	import cn.sftech.www.model.ModelLocator;
+	import cn.sftech.www.object.CoinScore;
 	import cn.sftech.www.object.CustomerCharacter;
 	import cn.sftech.www.object.DollarNumber;
+	import cn.sftech.www.object.ExperienceScore;
 	import cn.sftech.www.object.FoodObject;
 	import cn.sftech.www.object.MoneyCount;
+	import cn.sftech.www.object.PopularityScore;
 	import cn.sftech.www.object.ServeFoodObject;
 	import cn.sftech.www.util.BaseUI;
 	import cn.sftech.www.util.DataManager;
 	
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Linear;
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -34,6 +41,11 @@ package cn.sftech.www.view
 		private var TablePan : SFContainer;
 		/////   Buttton  reset , back , etc
 		private var ButtonPan : SFContainer;
+		/////   
+		private var settlementPan : SFContainer;
+		
+		private var settlement : SettlementPane
+		
 		private var gameBackButton :  GameBackButton;
 		private var gameMealButton : GameMealButton;
 		private var gamePropButton :  GameProp;
@@ -757,12 +769,74 @@ package cn.sftech.www.view
 					this.customPan.removeAll();
 				else if (this.gameMode ==  Information.RandomGameMode)
 					customPan.removeRandomAll();
-				//new DataManager
-				DataManager.saveScore(numberPane.goldCount);
+				
+				settlementPan = new SFContainer();
+				settlementPan.percentHeight = 100;
+				settlementPan.percentWidth = 100;
+				settlementPan.backgroundAlpha = 0 ;
+				this.addChild(settlementPan);
+				
+				settlement = new SettlementPane();
+				settlementPan.addChild(settlement);
+//				settlement.x = this.width/2;
+//				settlement.y = this.height/2;
+				settlement.scaleX= 0.5;
+				settlement.scaleY= 0.5;
+				settlement.addEventListener(Event.ENTER_FRAME,reZoomSettlementHandle);
+				TweenLite.to(settlement, 0.5,
+					{
+						scaleX:1, scaleY:1,
+						ease:Linear.easeNone, onComplete:reZoomEndhandle
+					}
+				);
+				settlement.okBtn.addEventListener(MouseEvent.CLICK,closeSettlement);
+				settlement.shareBtn.addEventListener(MouseEvent.CLICK,function () : void
+				{
+					//Share to Tencent tBlog
+				});
+				
+//				//new DataManager
+//				DataManager.saveScore(numberPane.goldCount);
 			}
 			else
 				updateTimeData();
 		}
+		
+		private function reZoomEndhandle() : void
+		{
+			settlement.x = (this.width - settlement.width)/2;
+			settlement.y = (this.height - settlement.height)/2;
+			settlement.removeEventListener(Event.ENTER_FRAME,reZoomSettlementHandle);
+			TweenLite.killTweensOf(settlement);
+			
+			var popularityScore : PopularityScore = new PopularityScore();
+			popularityScore.score = 1;
+			settlement.addChild(popularityScore);
+			
+			var coinScore : CoinScore = new CoinScore();
+			coinScore.score = 1;
+			settlement.addChild(coinScore);
+			
+			var experienceScore : ExperienceScore = new ExperienceScore();
+			experienceScore.score = 1;
+			settlement.addChild(experienceScore);
+		}
+		
+		private function reZoomSettlementHandle(event : Event) : void
+		{
+			settlement.x = (this.width - settlement.width)/2;
+			settlement.y = (this.height - settlement.height)/2;
+		}
+		
+		private function closeSettlement(event : MouseEvent) : void
+		{
+			TweenLite.killTweensOf(settlement);
+			settlementPan.removeChild(settlement);
+			settlement = null;
+			this.removeChild(settlementPan);
+			settlementPan = null;
+		}
+		
 		/////Customer start comming
 		private function onCustomerStart(event : TimerEvent):void
 		{
