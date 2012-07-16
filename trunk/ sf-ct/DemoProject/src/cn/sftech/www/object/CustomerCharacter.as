@@ -274,7 +274,7 @@ package cn.sftech.www.object
 		
 		public function get happyFood():int
 		{
-			return niceFoodIndex;
+			return _model.gameingFoods[niceFoodIndex].type;
 		}
 		
 		/*
