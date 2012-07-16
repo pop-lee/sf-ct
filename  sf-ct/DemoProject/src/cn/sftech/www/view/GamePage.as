@@ -8,6 +8,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.object.DollarNumber;
 	import cn.sftech.www.object.ExperienceScore;
 	import cn.sftech.www.object.FoodObject;
+	import cn.sftech.www.object.LevelLetter;
 	import cn.sftech.www.object.MoneyCount;
 	import cn.sftech.www.object.PopularityScore;
 	import cn.sftech.www.object.ServeFoodObject;
@@ -24,6 +25,7 @@ package cn.sftech.www.view
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
+	import flash.utils.setTimeout;
 	
 	import org.osmf.events.TimeEvent;
 
@@ -254,15 +256,15 @@ package cn.sftech.www.view
 			gameMealButton = new GameMealButton();
 			gameMealButton.x =Information.gameMealButton_Xpos
 			gameMealButton.y =Information.gameMealButton_Ypos
-			ButtonPan.addChild(gameMealButton);
+//			ButtonPan.addChild(gameMealButton);
 			gamePropButton =  new GameProp();
 			gamePropButton.x = Information.gameMealButton_Xpos;
 			gamePropButton.y = Information.gamePropButton_Ypos;		
-			ButtonPan.addChild(gamePropButton);
+//			ButtonPan.addChild(gamePropButton);
 			viceMeal =new  GameViceMeal();
 			viceMeal.x =Information.gameMealButton_Xpos;
 			viceMeal.y =Information.gameViceButton_Ypos;
-			ButtonPan.addChild(viceMeal);
+//			ButtonPan.addChild(viceMeal);
 			gameRestartPlate= new GameRestartPlate();
 			gameRestartPlate.x=Information.gameRestartPlateButton_Xpos;
 			gameRestartPlate.y=Information.gameRestartPlateButton_Ypos;
@@ -810,16 +812,31 @@ package cn.sftech.www.view
 			TweenLite.killTweensOf(settlement);
 			
 			var popularityScore : PopularityScore = new PopularityScore();
-			popularityScore.score = 1;
+			popularityScore.score = numberPane.heartCount;
 			settlement.addChild(popularityScore);
 			
-			var coinScore : CoinScore = new CoinScore();
-			coinScore.score = 1;
-			settlement.addChild(coinScore);
+			var timer : Timer = new Timer(500);
+			timer.addEventListener(TimerEvent.TIMER,function timeOutHandle() : void
+			{
+				var coinScore : CoinScore = new CoinScore();
+				coinScore.score = numberPane.goldCount;
+				var experienceScore : ExperienceScore = new ExperienceScore();
+				experienceScore.score = popularityScore.score * coinScore.score;
+				var levelLetter : LevelLetter = new LevelLetter();
+				levelLetter.score = experienceScore.score;
+				if(timer.currentCount == 1) {
+					settlement.addChild(coinScore);
+				} else if(timer.currentCount == 2) {
+					settlement.addChild(experienceScore);
+				} else if(timer.currentCount == 3) {
+					settlement.addChild(levelLetter);
+				} else {
+					timer.removeEventListener(TimerEvent.TIMER,timeOutHandle);
+					timer = null;
+				}
+			});
+			timer.start();
 			
-			var experienceScore : ExperienceScore = new ExperienceScore();
-			experienceScore.score = 1;
-			settlement.addChild(experienceScore);
 		}
 		
 		private function reZoomSettlementHandle(event : Event) : void

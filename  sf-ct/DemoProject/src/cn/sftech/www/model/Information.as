@@ -9,7 +9,7 @@ package cn.sftech.www.model
 		public static const heartNumberSymbol_x:int = 336;
 		public static const heartNumberSymbol_y:int = 16;
 		
-		public static const gameBackButton_Xpos : int= 437;
+		public static const gameBackButton_Xpos : int= 430;
 		public static const gameMealButton_Xpos : int= 146; 
 		public static const gameMealButton_Ypos : int= 197; 
 		public static const gameViceButton_Ypos : int= 237; 
@@ -39,16 +39,19 @@ package cn.sftech.www.model
 		public static const moveAblePositionHeight:int =55;
 		public static const Easy_TIME_LINE:int = 120;
 		//游戏时间长度（单位：秒）
-		public static const Random_TIME_LINE:int = 5;
+		public static const Random_TIME_LINE:int = 60;
 		
 		public static const moneyNumberSymbol_x:int = 64;
 		public static const moneyNumberSymbol_y:int = 168;
-		public static const popularityScoreSymbol_x:int = 92;
+		public static const popularityScoreSymbol_x:int = 125;
 		public static const popularityScoreSymbol_y:int = 70;
-		public static const coinScoreSymbol_x:int = 92;
+		public static const coinScoreSymbol_x:int = 125;
 		public static const coinScoreSymbol_y:int = 106;
-		public static const ExperienceScoreSymbol_x:int = 92;
+		public static const ExperienceScoreSymbol_x:int = 125;
 		public static const ExperienceScoreSymbol_y:int = 142;
+		public static const levelLetterSymbol_x : int = 160;
+		public static const levelLetterSymbol_y : int = 60;
+		
 		
 		public static const dollarPanWidth : int = 26;
 		
